@@ -19,6 +19,7 @@ Some project ideas:
 - Transformations based on text embeddings (Word2Vec, Glove, etc).
 - A bag-of-words built from the Library of Congress 2014 MARC dataset.
 - Use [Hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) to verify assumptions of a particular transformation.
+- Compose a dataset of records labeled by their [FRBR Group 1](https://en.wikipedia.org/wiki/Functional_Requirements_for_Bibliographic_Records) relationships.
 
 ## Sharing
 
