@@ -1,4 +1,4 @@
-# MARC Pandas
+# MARC Dataframes
 This project contains transformers for [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/) for NLP applications.
 Transformers output [Pandas data frames](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas-dataframe) for downstream processing.
 
