@@ -5,9 +5,9 @@ Transformers output [Pandas data frames](https://pandas.pydata.org/pandas-docs/s
 ## Usage
 
 ```python
-from marc_pandas import (load, transform, transformers, corpora)
+from marc_pandas import (load, transform, marc, transformers, corpora)
 
-marc = load('marc.xml')
+marc = load('marc.xml', fields = [marc.MainEntry, marc.Title, marc.Edition])
 vectorized = transform(marc, transformer = transformers.NGrams(1), corpus = corpora.LOC2014)
 ```
 
