@@ -17,7 +17,7 @@ Contributions to this project are encouraged.
 
 Some project ideas:
 - Transformations based on text embeddings (Word2Vec, Glove, etc).
-- A bag-of-words corpus built on the Library of Congress 2014 dataset.
+- A bag-of-words built from the Library of Congress 2014 dataset.
 - Use [Hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) to verify assumptions of a particular transformation.
 
 ## Sharing
