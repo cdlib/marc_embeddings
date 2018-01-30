@@ -57,11 +57,11 @@ def flatten(*args):
         elif type(arg) == list:
             for v in arg:
                 yield from flatten(v)
+        elif type(arg) == str:
+            yield arg
         elif isinstance(arg, collections.Iterable):
             for v in arg:
                 yield from flatten(v.value)
-        elif type(arg) == str:
-            yield arg
         elif type(arg) == dict:
             for v in arg.values():
                 yield from flatten(v)
