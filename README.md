@@ -2,12 +2,6 @@
 This project contains Scikit transformers for [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/) for NLP applications.
 Transformers output either [Pandas data frames](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas-dataframe) or Numpy matrices for downstream processing.
 
-## Usage
-
-```python
-... todo
-```
-
 ## Sharing
 
 ```
