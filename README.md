@@ -1,25 +1,12 @@
 # MARC Dataframes
-This project contains transformers for [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/) for NLP applications.
-Transformers output [Pandas data frames](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas-dataframe) for downstream processing.
+This project contains Scikit transformers for [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/) for NLP applications.
+Transformers output either [Pandas data frames](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas-dataframe) or Numpy matrices for downstream processing.
 
 ## Usage
 
 ```python
-from marc_dataframes import (load, transform, marc, transformers, corpora)
-
-marc = load('marc.xml', fields = [marc.MainEntry, marc.Title, marc.Edition])
-vectorized = transform(marc, transformer = transformers.NGrams(1, idf = true, corpus = corpora.LOC2014))
+... todo
 ```
-
-## Contributing
-
-Contributions to this project are encouraged.
-
-Some project ideas:
-- Transformations based on text embeddings (Word2Vec, Glove, etc).
-- A bag-of-words built from the Library of Congress 2014 MARC dataset.
-- Use [Hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) to verify assumptions of a particular transformation.
-- Compose a dataset of records labeled by their [FRBR Group 1](https://en.wikipedia.org/wiki/Functional_Requirements_for_Bibliographic_Records) relationships.
 
 ## Sharing
 
