@@ -1,4 +1,4 @@
-from marc_dataframes.frbr import Entity
+from .frbr import Entity
 from enum import Enum
 
 class Field():
