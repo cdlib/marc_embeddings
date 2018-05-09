@@ -1,5 +1,5 @@
-# MARC Dataframes
-This project contains Scikit transformers for [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/) for NLP applications.
+# MARC Embeddings
+This project contains utilities for machine processing of [MARC 21 metadata](https://www.loc.gov/marc/bibliographic/).
 Transformers output either [Pandas data frames](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas-dataframe) or Numpy matrices for downstream processing.
 
 ## Sharing
