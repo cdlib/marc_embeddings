@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Entity(Enum):
     """FRBR group 1 entities.
     """
