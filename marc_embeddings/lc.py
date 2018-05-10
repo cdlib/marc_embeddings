@@ -23,10 +23,6 @@ def load_from_xml(filename):
                 record = ""
                 yield LCRecord(metadata = doc['record'])
 
-        #doc = xmltodict.parse(f.read())
-        #for r in doc['collection']['record']:
-        #    yield LCRecord(metadata=r)
-
 
 def pick_field(fields, name):
     for field in fields:
