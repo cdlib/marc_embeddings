@@ -1,13 +1,31 @@
 import xmltodict
 from functools import reduce
 from sklearn.base import TransformerMixin, BaseEstimator
+import pandas as pd
+import re
 
+
+RECORD_START = '^<record>'
+RECORD_END = '</record>$'
 
 def load_from_xml(filename):
     with open(filename) as f:
-        doc = xmltodict.parse(f.read())
-        for r in doc['collection']['record']:
-            yield LOCRecord(metadata=r)
+        record = ""
+        in_record = False
+        for line in f:
+            if re.match(RECORD_START, line):
+                in_record = True
+            if in_record:
+                record += line
+            if re.match(RECORD_END, line):
+                in_record = False
+                doc = xmltodict.parse(record)
+                record = ""
+                yield LCRecord(metadata = doc['record'])
+
+        #doc = xmltodict.parse(f.read())
+        #for r in doc['collection']['record']:
+        #    yield LCRecord(metadata=r)
 
 
 def pick_field(fields, name):
@@ -21,14 +39,14 @@ def pick_subfield(subfields, name):
     if type(subfields) == list:
         for subfield in subfields:
             if subfield['@code'] == name:
-                return subfield
+                return subfield['#text']
     else:
         if subfields['@code'] == name:
-            return subfields
+            return subfields['#text']
     None
 
 
-class LOCRecord():
+class LCRecord():
     def __init__(self, metadata={}):
         self.metadata = metadata
 
@@ -46,7 +64,7 @@ class LOCRecord():
 
 
 # For a selection of MARC fields, transforms every LOCRecord into a single DataFrame or a list of strings.
-class LOCTransformer(BaseEstimator, TransformerMixin):
+class LCTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, selection, dataframe=False):
         self.selection = selection
         self.use_dataframe = dataframe
