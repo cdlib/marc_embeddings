@@ -2,6 +2,10 @@ from .frbr import Entity
 from enum import Enum
 import collections
 
+"""
+See http://www.loc.gov/marc/marc-functional-analysis/functional-analysis.html
+"""
+
 
 class Field:
     def __init__(self, value, level=Entity.WORK, subfields=[]):
