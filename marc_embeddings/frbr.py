@@ -1,10 +1,9 @@
 from enum import Enum
 
 
+# FRBR Group 1 entities
 class Entity(Enum):
-    """FRBR group 1 entities.
-    """
     WORK = 1
-    EXPRESISON = 2
+    EXPRESSION = 2
     MANIFESTATION = 3
     ITEM = 4

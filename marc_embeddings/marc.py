@@ -1,5 +1,6 @@
 from .frbr import Entity
 from enum import Enum
+import collections
 
 
 class Field:
@@ -10,14 +11,14 @@ class Field:
 
 
 class Subfield:
-    def __init__(self, value, level=Entity.WORK):
+    def __init__(self, value, level=None):
         self.value = value
         self.level = level
 
 
 class MainEntry(Enum):
     PERSONAL_NAME = Field('100', subfields=[])
-    COPRORATE_NAME = Field('110', subfields=[])
+    CORPORATE_NAME = Field('110', subfields=[])
     MEETING_NAME = Field('110', subfields=[])
     UNIFORM_TITLE = Field('130', subfields=[])
 
@@ -25,10 +26,35 @@ class MainEntry(Enum):
 class TitleRelated(Enum):
     ABBREVIATED_TITLE = Field('210', subfields=[])
     KEY_TITLE = Field('222', subfields=[])
-    UNIFORM_TITLE = Field('240', subfields=[])
-    TRANSLATION_OF_TITLE_BY_CATLOGING_AGENCY = Field('242', subfields=[])
+    UNIFORM_TITLE = Field('240', subfields=[
+        Subfield('a', Entity.WORK),
+        Subfield('d', Entity.WORK),
+        Subfield('f', Entity.WORK),
+        Subfield('g'),
+        Subfield('h', Entity.MANIFESTATION),
+        Subfield('k', Entity.WORK),
+        Subfield('l', Entity.EXPRESSION),
+        Subfield('m', Entity.WORK),
+        Subfield('n', Entity.WORK),
+        Subfield('o', Entity.EXPRESSION),
+        Subfield('p', Entity.WORK),
+        Subfield('r', Entity.WORK),
+        Subfield('s', Entity.WORK)
+    ])
+    TRANSLATION_OF_TITLE_BY_CATALOGING_AGENCY = Field('242', subfields=[])
     COLLECTIVE_UNIFORM_TITLE = Field('243', subfields=[])
-    TITLE_STATEMENT = Field('245', subfields=[])
+    TITLE_STATEMENT = Field('245', subfields=[
+        Subfield('a', Entity.MANIFESTATION),
+        Subfield('b'),
+        Subfield('c', Entity.MANIFESTATION),
+        Subfield('f', Entity.WORK),
+        Subfield('g', Entity.WORK),
+        Subfield('h', Entity.MANIFESTATION),
+        Subfield('k', Entity.WORK),
+        Subfield('n', Entity.MANIFESTATION),
+        Subfield('p', Entity.MANIFESTATION),
+        Subfield('s', Entity.EXPRESSION)
+    ])
     VARYING_FORM_OF_TITLE = Field('246', subfields=[])
     FORMER_TITLE = Field('247', subfields=[])
 
@@ -50,9 +76,6 @@ class AllFields(Enum):
     MAIN_ENTRY = MainEntry
     TITLE_RELATED = TitleRelated
     EDITION_IMPRINT = EditionImprint
-
-
-import collections
 
 
 def flatten(*args):
