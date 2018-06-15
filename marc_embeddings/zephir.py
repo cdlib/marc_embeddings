@@ -16,8 +16,8 @@ def pick_field(array, name):
             None
 
 
-# A Zephyr JSON record composed of field/subfield attributes.
-class ZephyrRecord():
+# A Zephir JSON record composed of field/subfield attributes.
+class ZephirRecord():
     def __init__(self, metadata={}):
         self.metadata = metadata
         self.cid = self.get_field('CID', 'a')
@@ -45,8 +45,8 @@ class ZephyrRecord():
             return pick_field(field_value['subfields'], subfield)
 
 
-# For a selection of MARC fields, transforms every ZephyrRecord into a single DataFrame or a list of strings.
-class ZephyrTransformer(BaseEstimator, TransformerMixin):
+# For a selection of MARC fields, transforms every ZephirRecord into a single DataFrame or a list of strings.
+class ZephirTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, selection, dataframe=False):
         self.selection = selection
         self.use_dataframe = dataframe
@@ -84,7 +84,7 @@ def load_from_api(htid):
     sys.stderr.write("GET %s\n" % urlstr)
     sys.stderr.flush()
     response = http.request('GET', urlstr)
-    return ZephyrRecord(metadata=json.loads(response.data.decode('utf-8')))
+    return ZephirRecord(metadata=json.loads(response.data.decode('utf-8')))
 
 
 # Compares two vectors.
@@ -124,13 +124,13 @@ def compare_field(field, vectorizer):
             ('split r1, r2', FeatureUnion([
                 ('r1', Pipeline([
                     ('select r1', SelectField(LEFT)),
-                    ('get field', ZephyrTransformer([field])),
+                    ('get field', ZephirTransformer([field])),
                     ('flatten', FlattenTransformer()),
                     ('vectorize', vectorizer)
                 ])),
                 ('r2', Pipeline([
                     ('select r2', SelectField(RIGHT)),
-                    ('get field', ZephyrTransformer([field])),
+                    ('get field', ZephirTransformer([field])),
                     ('flatten', FlattenTransformer()),
                     ('vectorize', vectorizer)
                 ]))
