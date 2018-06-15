@@ -17,12 +17,34 @@ class Field:
         self.value = value
         self.level = level
         self.subfields = subfields
+        for subfield in subfields:
+            subfield.parent = self
+
+    def subfield(self, name):
+        for subfield in self.subfields:
+            if subfield.value == name:
+                return subfield
+        return None
+
+    def select(self, levels=[]):
+        for subfield in self.subfields:
+            if subfield.level in levels:
+                yield subfield
+
+    def __repr__(self):
+        return self.value
 
 
 class Subfield:
-    def __init__(self, value, level=None):
+    def __init__(self, value, level=None, parent=None):
         self.value = value
         self.level = level
+
+    def __repr__(self):
+        if self.parent:
+            return '%s_%s' % (self.parent.value, self.value)
+        else:
+            return self.value
 
 
 class MainEntry(Enum):
@@ -212,30 +234,32 @@ class RelevantFields(Enum):
     EDITION_IMPRINT = EditionImprint
 
 
-def flatten(*args):
+def flatten(*args, levels=[]):
     """Flatten an object containing MARC fields.
     """
     for arg in args:
         if type(arg) in [MainEntry, TitleRelated, EditionImprint]:
-            yield arg.value.value
+            yield from arg.value.select(levels)
         elif type(arg) == list:
             for v in arg:
-                yield from flatten(v)
+                yield from flatten(v, levels=levels)
         elif type(arg) == str:
             yield arg
         elif isinstance(arg, collections.Iterable):
             for v in arg:
-                yield from flatten(v.value)
+                yield from flatten(v.value, levels=levels)
         elif type(arg) == dict:
             for v in arg.values():
-                yield from flatten(v)
+                yield from flatten(v, levels=levels)
         elif isinstance(arg, Field):
-            yield arg.value
+            yield from arg.select(levels)
+        elif isinstance(arg, Subfield):
+            yield arg
         else:
             pass
 
 
-def select(*args):
+def select(*args, levels=[]):
     """Produce a list of all MARC fields.
     """
-    return sorted(list(set(flatten(*args))))
+    return list(set(flatten(*args, levels=levels)))

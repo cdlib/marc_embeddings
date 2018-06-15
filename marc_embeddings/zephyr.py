@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.metrics.pairwise import cosine_similarity
+from marc_embeddings.marc import Field, Subfield
 
 
 def pick_field(array, name):
@@ -21,18 +22,27 @@ class ZephyrRecord():
         self.metadata = metadata
         self.cid = self.get_field('CID', 'a')
 
-    def get_field(self, fieldname, subfieldname=None):
+    def get_field(self, field, subfield=None):
         fields = self.metadata['fields']
-        field = pick_field(fields, fieldname)
-        if not field:
-            return field
-        elif 'subfields' not in field:
-            return str(field)
-        elif subfieldname is None:
-            subfields = field['subfields']
-            return ' '.join([list(subfield.values())[0] for subfield in subfields])
+        if isinstance(field, Field):
+            field_name = field.value
+        elif isinstance(field, Subfield):
+            field_name = field.parent.value
+            subfield = field.value
         else:
-            return pick_field(field['subfields'], subfieldname)
+            field_name = field
+
+        field_value = pick_field(fields, field_name)
+
+        if not field_value:
+            return None
+        elif 'subfields' not in field_value:
+            return str(field_value)
+        elif subfield is None:
+            subfields = field_value['subfields']
+            return ' '.join([list(s.values())[0] for s in subfields])
+        else:
+            return pick_field(field_value['subfields'], subfield)
 
 
 # For a selection of MARC fields, transforms every ZephyrRecord into a single DataFrame or a list of strings.
