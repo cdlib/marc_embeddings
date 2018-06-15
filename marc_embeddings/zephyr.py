@@ -1,4 +1,4 @@
-import json, ast
+import json
 from functools import reduce
 from urllib3 import PoolManager
 import pandas as pd
@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 def pick_field(array, name):
     for field in array:
         if name in field:
-            return str(field[name])  # TODO: clean this up
+            return field[name]
         else:
             None
 
@@ -21,13 +21,18 @@ class ZephyrRecord():
         self.metadata = metadata
         self.cid = self.get_field('CID', 'a')
 
-    def get_field(self, field, subfield=None):
-        field = pick_field(self.metadata['fields'], field)
-        if subfield is None:
+    def get_field(self, fieldname, subfieldname=None):
+        fields = self.metadata['fields']
+        field = pick_field(fields, fieldname)
+        if not field:
             return field
+        elif 'subfields' not in field:
+            return str(field)
+        elif subfieldname is None:
+            subfields = field['subfields']
+            return ' '.join([list(subfield.values())[0] for subfield in subfields])
         else:
-            field_obj = ast.literal_eval(field)
-            return pick_field(field_obj['subfields'], subfield)
+            return pick_field(field['subfields'], subfieldname)
 
 
 # For a selection of MARC fields, transforms every ZephyrRecord into a single DataFrame or a list of strings.
@@ -74,15 +79,15 @@ def load_from_api(htid):
 
 # Compares two vectors.
 class CosineSimilarity(BaseEstimator, TransformerMixin):
-    @classmethod
-    def evaluate(cls, x):
+    @staticmethod
+    def evaluate(x):
         v_size = int(x.shape[1] / 2)
         v1 = x[:, :v_size]
         v2 = x[:, v_size:]
         return cosine_similarity(v1, v2)[0]
 
     def transform(self, X):
-        return list(map(lambda x: self.evaluate(x), X))
+        return list(map(lambda x: CosineSimilarity.evaluate(x), X))
 
     def fit(self, *_):
         return self
